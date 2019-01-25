@@ -1,0 +1,11 @@
+{
+  "name": "ZagreusGayz",
+  "version": "1.0.0",
+  "description": "Suicidal Tendencies Sold Separately",
+  "main": "bot.js",
+  "author": "BidOOF#1234",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "winston": "^3.1.0"
+  }
+}

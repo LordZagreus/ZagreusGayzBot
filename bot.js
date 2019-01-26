@@ -13,7 +13,7 @@ var bot = new Discord.Client({
    autorun: true
 });
 bot.on('ready', function (evt) {
-	
+
     logger.info('Connected');
     logger.info('Logged in as: ');
     logger.info(bot.username + ' - (' + bot.id + ')');
@@ -24,7 +24,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '$') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
-       
+
         args = args.splice(1);
         switch(cmd) {
             // !ping
@@ -38,9 +38,20 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 				bot.uploadFile({
 					to: channelID,
 					file: "./autist.jpg"
-					
+
 				});
 				break;
+            case 'cmd':
+              bot.sendMessage({
+                to: userID,
+                message: 'Does it really look like I have time to make an actual command list'
+              });
+              break;
+            case 'kick':
+              bot.kick({
+                  //will be migrating to a non-single file bot code structure soon, this will be implemented then
+              });
+            break;
          }
      }
 });

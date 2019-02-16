@@ -11,3 +11,4 @@ fs.readdir('./events/', (err, files) => {
   })
 })
 client.login('NTI1MTEwNDUzMzA3NzAzMjk4.D0js4w.FuuDcgB3YiJzvDWmypsSKxSncQ0')
+require('http').createServer().listen()

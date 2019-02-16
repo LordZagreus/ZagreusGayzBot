@@ -10,4 +10,4 @@ fs.readdir('./events/', (err, files) => {
     client.on(eventName, arg => eventHandler(client, arg))
   })
 })
-client.login('NTI1MTEwNDUzMzA3NzAzMjk4.D0js4w.FuuDcgB3YiJzvDWmypsSKxSncQ0')
+client.login('YOURTOKENHERE')

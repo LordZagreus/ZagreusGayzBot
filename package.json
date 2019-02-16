@@ -1,11 +1,20 @@
 {
-  "name": "ZagreusGayz",
+  "name": "my-bot",
   "version": "1.0.0",
-  "description": "Suicidal Tendencies Sold Separately",
-  "main": "bot.js",
-  "author": "BidOOF#1234",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-    "winston": "^3.1.0"
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }

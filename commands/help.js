@@ -10,7 +10,7 @@ module.exports = message => {
   description: "[Click this link to visit the GitHub repository.](https://github.com/LordZagreus/ZagreusGayzBot)",
   fields: [{
     name: "Commands",
-    value: "Current functional commands: [!ban \@user] and [!kick \@user]"
+    value: "Current functional commands: [!ban \@user] and [!kick \@user]. Each requires the user to have the respective permission to be used."
   },
 ],
   footer: {

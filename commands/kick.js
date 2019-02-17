@@ -1,6 +1,9 @@
 module.exports = message => {
   const member = message.mentions.members.first()
-
+  var rolekick = message.member.hasPermission('KICK_MEMBERS')
+  if (!rolekick) {
+    return message.channel.send(`You do not have the permissions necessary to use this command.`)
+  }
   if (!member) {
     return message.channel.send(`Because of lazy hotcode, I can only kick users you \@. UserID and mentionless kicking soon:tm:`)
   }

@@ -1,2 +1,5 @@
 .env
 node_modules/
+now.json
+app.json
+invitelink.md

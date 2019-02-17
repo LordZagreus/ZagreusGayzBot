@@ -1,3 +1,4 @@
-module.exports = (client, member) => {
-  member.send(`This song is for racist people only. If you're a nigger, or a faggot, then get out`)
+
+module.exports = (client, member, server) => {
+  member.send(`Welcome to the server, ${member}. Make sure to read the rules channel, if there is one.`)
 }

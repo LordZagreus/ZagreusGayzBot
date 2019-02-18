@@ -21,11 +21,9 @@ fs.readdir('./cmds', (err, files) => {
     if (props.help && props.help.name) {
       bot.commands.set(props.help.name, props)
     } else{
-      console.error("Not refactored.")
+      console.error("Error in loading command.")
     }
-
-    
-  })
+ })
 })
 
 bot.on("ready", async () => {
@@ -47,10 +45,7 @@ bot.on("message", async message => {
 
   let cmd = bot.commands.get(command.slice(prefix.length))
   if(cmd) cmd.run(bot, message, args)
-
 })
 
-
-//NOT PART OF REFACTOR, DO NOT COMMENT OUT BELO
 bot.login(botSettings.token)
 require('http').createServer().listen()

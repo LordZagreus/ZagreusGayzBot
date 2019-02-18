@@ -2,64 +2,55 @@ require('dotenv').config()
 const fs = require('fs')
 const Discord = require('discord.js')
 const botSettings = require('./botsettings.json')
-const client = new Discord.Client()
+const bot = new Discord.Client()
+bot.commands = new Discord.Collection()
 const prefix = botSettings.prefix
 
-fs.readdir('./events/', (err, files) => {
-  files.forEach(file => {
-    const eventHandler = require(`./events/${file}`)
-    const eventName = file.split('.')[0]
-    client.on(eventName, arg => eventHandler(client, arg))
+fs.readdir('./cmds', (err, files) => {
+  if(err) console.log(err)
+  let jsfiles = files.filter(f => f.split(".").pop() === "js")
+  if(jsfiles.length <= 0){
+    console.log("No commands to load. Check to see if any files are in the folder.")
+    return
+  }
+  console.log(`Loading ${jsfiles.length} commands.`)
+
+  jsfiles.forEach((f, i) => {
+    let props = require(`./cmds/${f}`)
+    console.log(`${i + 1}: ${f} loaded.`)
+    if (props.help && props.help.name) {
+      bot.commands.set(props.help.name, props)
+    } else{
+      console.error("Not refactored.")
+    }
+
+    
   })
 })
 
-//refactor mark II begins below
-
-client.on("ready", async () => {
+bot.on("ready", async () => {
   try {
-    let link = await client.generateInvite(["ADMINISTRATOR"])
  } catch(e) {
    console.log(e.stack)
 }})
 
 
-client.on("message", async message => {
+bot.on("message", async message => {
   if(message.author.bot) return
   if(message.channel.type === "dm") return
 
-  let messageArray = message.content.split(" ")
+  let messageArray = message.content.split(/\s+/g)
   let command = messageArray[0]
   let args = messageArray.slice(1)
+
   if(!command.startsWith(prefix)) return
 
-  if(command === `${prefix}mute`) {
-    if(!message.channel.permissionsFor(message.member).hasPermission("MANAGE_MESSAGES")) return message.channel.sendMessage("You do not have the required permissions to use this command.")
-    let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
-    if(!toMute) return message.channel.sendMessage("You did not specify a user to mute.")
-    let role = message.guild.roles.find(r => r.name === "Muted");
-    if(!role){
-      try {
-        role =  await message.guild.createRole({
-          name: "Muted",
-          color: "#000000",
-          permissions: []
-        })
-        message.guild.channels.forEach(async (channel, id) => {
-          await channel.overwritePermissions(role, {
-            SEND_MESSAGES: false,
-            ADD_REACTIONS: false
-          })
-        })
-    } catch (e) {
-      console.log(e.stack)
-    }
-    }if(toMute.roles.has(role.id)) return message.channel.sendMessage("This user is already muted.")
-    await toMute.addRole(role)
-    message.channel.sendMessage("User has been muted.")
-    return
-  }
+  let cmd = bot.commands.get(command.slice(prefix.length))
+  if(cmd) cmd.run(bot, message, args)
+
 })
 
-//NOT PART OF REFACTOR, DO NOT COMMENT OUT BELOW
-client.login(botSettings.token)
+
+//NOT PART OF REFACTOR, DO NOT COMMENT OUT BELO
+bot.login(botSettings.token)
 require('http').createServer().listen()

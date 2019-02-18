@@ -1,4 +1,4 @@
-module.exports = message => {
+module.exports.run = async(bot, message, args) => {
   const member = message.mentions.members.first()
   var rolekick = message.member.hasPermission('KICK_MEMBERS')
   if (!rolekick) {
@@ -15,6 +15,10 @@ module.exports = message => {
   return member
     .kick()
     .then(() => message.channel.send(`${member.user.tag} was yeeted out of the server.`))
-    .catch(error => message.channel.send(`Error caught in kick. Try again or refactor code you lazy dumbass`))
+    .catch(error => message.channel.send(`Error caught in kick. Code probably spaget.`))
 
+}
+
+module.exports.help = {
+  name:"kick"
 }

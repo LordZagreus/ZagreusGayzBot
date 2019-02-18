@@ -1,5 +1,5 @@
 module.exports.run = async(bot, message, args) => {
-if(!message.channel.permissionsFor(message.member).hasPermission("MANAGE_MESSAGES")) return message.channel.sendMessage("You do not have the required permissions to use this command.")
+if(!message.channel.permissionsFor(message.member).hasPermission("MANAGE_MESSAGES")) return message.channel.send("You do not have the required permissions to use this command.")
   let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
   if(!toMute) return message.channel.send("You did not specify a user to mute. Make sure to use a mention.")
   let role = message.guild.roles.find(r => r.name === "Muted");

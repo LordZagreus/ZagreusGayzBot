@@ -1,8 +1,8 @@
 const Discord = module.require('discord.js')
 module.exports.run = async (bot, message, args) => {
   let embed = new Discord.RichEmbed()
-    .setAuthor("User Information")
-    .setDescription(`User information for ${message.author.username}`)
+    .setAuthor(`User Information for ${message.author.username}`)
+    .setThumbnail(message.author.displayAvatarURL)
     .setColor("#0073CF")
     .addField("Full Username", message.author.tag)
     .addField("Discord ID", message.author.id)

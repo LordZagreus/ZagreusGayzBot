@@ -7,7 +7,7 @@ let embed = new Discord.RichEmbed()
     .setColor("#0073CF")
     .setFooter("֎Bidoof֎#1234 is the creator of this bot. PM for troubleshooting.", "https://cdn.discordapp.com/attachments/546132606635343872/546842386421121025/avatar.png")
     .addField("Moderation Commands", "[!ban \@user], [!kick \@user], [!(un)mute \@user]")
-    .addField("Other Commands", "[!avatar], [!userinfo]")
+    .addField("Other Commands", "[!avatar], [!userinfo], [!poll (text)]")
 message.channel.send({embed})
 }
 

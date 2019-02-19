@@ -1,6 +1,5 @@
 const agree = "✅"
 const disagree = "⛔"
-const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
   var voteargs = message.content
@@ -10,8 +9,7 @@ module.exports.run = async (bot, message, args) => {
   await msg.react(agree)
   await msg.react(disagree)
 
-  const reactions = await msg.awaitReactions(reaction => reaction.emoji.name === agree || reaction.emoji.name === disagree, {time: 10000})
-  console.log(reactions);
+  const reactions = await msg.awaitReactions(reaction => reaction.emoji.name === agree || reaction.emoji.name === disagree, {time: 2000})
   message.channel.send(`Voting complete\n${agree}: ${reactions.get(agree).count-1}\n${disagree}: ${reactions.get(disagree).count-1}`)
 
 }

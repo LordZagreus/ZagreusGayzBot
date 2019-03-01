@@ -8,11 +8,9 @@ module.exports.run = async (bot, message, args) => {
     .setAuthor(`User Information for ${user.username}`)
     .setThumbnail(user.displayAvatarURL)
     .setColor("#0073CF")
-    .addField("Full Username", message.author.tag)
+    .addField("Full Username", user.tag)
     .addField("Discord ID", message.author.id)
     .addField("Account Creation Date", message.author.createdAt)
-    .addField("Full Username", user.tag)
-    .addField("Discord ID", user.id)
     .addField("Roles", member.roles.map(r => `${r}`).join(' | '), true)
     //haha idk why join date always returns undefined
     .addField("Latest Server Join Date", user.joinedAt)

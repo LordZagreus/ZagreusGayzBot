@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args) => {
   await msg.react(agree)
   await msg.react(disagree)
 
-  const reactions = await msg.awaitReactions(reaction => reaction.emoji.name === agree || reaction.emoji.name === disagree, {time: 2000})
+  const reactions = await msg.awaitReactions(reaction => reaction.emoji.name === agree || reaction.emoji.name === disagree, {time: 10000})
   message.channel.send(`Voting complete\n${agree}: ${reactions.get(agree).count-1}\n${disagree}: ${reactions.get(disagree).count-1}`)
 
 }

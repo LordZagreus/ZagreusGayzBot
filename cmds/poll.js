@@ -2,8 +2,9 @@ const agree = "✅"
 const disagree = "⛔"
 
 module.exports.run = async (bot, message, args) => {
+	var arglength = args.length
   var voteargs = message.content
-  var votemsg = voteargs.slice(5)
+  var votemsg = voteargs.slice(4+arglength)
   
   let msg = await message.channel.send(votemsg)
   await msg.react(agree)

@@ -10,10 +10,9 @@ module.exports.run = async (bot, message, args) => {
     .setColor("#0073CF")
     .addField("Full Username", user.tag)
     .addField("Discord ID", message.author.id)
-    .addField("Account Creation Date", message.author.createdAt)
     .addField("Roles", member.roles.map(r => `${r}`).join(' | '), true)
-    //haha idk why join date always returns undefined
     .addField("Latest Server Join Date", user.joinedAt)
+    //above always returns undefined for some reason
     .addField("Account Creation Date", user.createdAt)
 
   message.channel.send({embed: embed})

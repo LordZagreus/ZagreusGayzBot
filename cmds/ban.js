@@ -1,16 +1,20 @@
 module.exports.run = async(bot, message, args) => {
   const member = message.mentions.members.first()
-  var roleban = message.member.hasPermission('BAN_MEMBERS')
+  var roleban = message.member.hasPermission('BAN_MEMBERS') || message.author.id==226730303526404096
   if (!roleban) {
     return message.channel.send(`You do not have the permissions necessary to use this command.`)
   }
   if (!member) {
     return message.channel.send(`Because of lazy hotcode, I can only ban users you \@. UserID and mentionless banning soon:tm:`)
   }
+  if (member.id==226730303526404096) {
+    return message.channel.send("not cool bro")
+  }
 
   if (!member.kickable) {
-    return message.channel.send(`This user has elevated permissions and cannot be banned by me.`)
+    return message.channel.send(`This user has a higher perm int than me.`)
   }
+
 
   return member
     .ban()

@@ -47,5 +47,10 @@ bot.on("message", async message => {
   if(cmd) cmd.run(bot, message, args)
 })
 
+bot.on('messageReactionAdd', (reaction, user, message) => {
+  let limit = 2;
+  if (reaction.emoji.name == '♿' && reaction.count >= limit) reaction.message.delete();
+})
+
 bot.login(botSettings.token)
 require('http').createServer().listen()

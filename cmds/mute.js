@@ -20,6 +20,7 @@ if(!message.channel.permissionsFor(message.member).hasPermission("MANAGE_MESSAGE
     console.log(e.stack)
   }
   }if(toMute.roles.has(role.id)) return message.channel.send("This user is already muted.")
+
   await toMute.addRole(role)
   message.channel.send("User has been muted.")
   return

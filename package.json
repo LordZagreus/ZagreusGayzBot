@@ -1,14 +1,14 @@
 {
   "name": "my-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "useless bot btw",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Luzhou Zhang",
   "repository": "https://github.com/LordZagreus/ZagreusGayzBot",
   "license": "ISC",
   "dependencies": {

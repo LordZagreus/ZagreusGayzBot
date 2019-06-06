@@ -1,11 +1,14 @@
 require('dotenv').config()
 const fs = require('fs')
+var util = require('util')
+var http = require('http')
 const Discord = require('discord.js')
 const botSettings = require('./botsettings.json')
 const bot = new Discord.Client({disableEveryone: true})
 bot.commands = new Discord.Collection()
 const prefix = botSettings.prefix
 bot.mutes = require('./mutes.json')
+bot.blacklist = require('./blacklist.json')
 
 fs.readdir('./cmds', (err, files) => {
   if(err) console.log(err)
@@ -55,17 +58,17 @@ bot.on("ready", async () => {
 bot.on("message", async message => {
   if(message.author.bot) return
   if(message.channel.type === "dm") return
-  //bot blacklist below. 
-  //current array is [ToxicScorpius, (null)]
-  // const blacklist = ['408694410440736778']
-  // for (let i = 0; i < blacklist.length; i++) {
-  // if (message.author.id === blacklist[i]) return message.reply('your userID has been blacklisted')
-  // }
   let messageArray = message.content.split(/\s+/g)
   let command = messageArray[0]
   let args = messageArray.slice(1)
-
   if(!command.startsWith(prefix)) return
+
+  for (let i in bot.blacklist){
+    let guildID = bot.blacklist[i].guild
+    let guild = bot.guilds.get(guildID)
+    let member = guild.members.get(i)
+    if (message.author.id==member.id) return message.reply("Your UserID has been blacklisted.")
+  }
 
   let cmd = bot.commands.get(command.slice(prefix.length))
   if(cmd) cmd.run(bot, message, args)

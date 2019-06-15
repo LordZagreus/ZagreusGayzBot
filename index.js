@@ -2,6 +2,7 @@ require('dotenv').config()
 const fs = require('fs')
 var util = require('util')
 var http = require('http')
+const { join } = require('path');
 const Discord = require('discord.js')
 const botSettings = require('./botsettings.json')
 const bot = new Discord.Client({disableEveryone: true})
@@ -9,6 +10,7 @@ bot.commands = new Discord.Collection()
 const prefix = botSettings.prefix
 bot.mutes = require('./mutes.json')
 bot.blacklist = require('./blacklist.json')
+const queue = new Map()
 
 fs.readdir('./cmds', (err, files) => {
   if(err) console.log(err)
@@ -72,6 +74,8 @@ bot.on("message", async message => {
 
   let cmd = bot.commands.get(command.slice(prefix.length))
   if(cmd) cmd.run(bot, message, args)
+
+  const serverQueue = queue.get(message.guild.id)
 })
 
 //wheelchair deletion code, disabled for now

@@ -18,8 +18,11 @@
     "discord.js": "^11.4.2",
     "dotenv": "^6.2.0",
     "https": "^1.0.0",
+    "node-opus": "^0.3.2",
+    "opusscript": "0.0.6",
     "request": "^2.88.0",
-    "snekfetch": "^4.0.4"
+    "snekfetch": "^4.0.4",
+    "ytdl-core": "^0.29.2"
   },
   "devDependencies": {
     "eslint": "^5.14.0",

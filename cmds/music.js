@@ -14,6 +14,8 @@ module.exports.run = async(bot, message, args) => {
 	// 	message.channel.send("I do not have speak permissions.")
 	// }
 if (args[0]==="play"){
+	let link = args[1].replace(/\s+/g, '')
+	if(ytdl.validateID(link!=true)) return message.channel.send("Only valid YouTube URLs are accepted.")
 	const songInfo = await ytdl.getInfo(args[1])
 	const song = {
 		title: songInfo.title,
@@ -40,7 +42,7 @@ if (args[0]==="play"){
 	} catch (e){
 		console.error(e)
 		queue.delete(message.guild.id)
-		return message.channel.send("Some error occured.")
+		return message.channel.send(`${e}`)
 	}
 	} else {
 		serverQueue.songs.push(song)
@@ -57,7 +59,7 @@ function play(guild, song){
 		return
 	}
 
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url), {filter: 'audioonly'})
 
 	dispatcher.on(`end`, () => {
 		console.log("Song ended.")

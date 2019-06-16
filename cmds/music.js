@@ -7,6 +7,7 @@ module.exports.run = async(bot, message, args) => {
 	const voiceChannel = message.member.voiceChannel
 	if (!voiceChannel) return message.channel.send("You are not in a voice channel.")
 	const permissions = voiceChannel.permissionsFor(message.client.user)
+	// permissions checks, broken due to deprecations
 	// if (!permission.has("CONNECT")) {
 	// 	message.channel.send("Could not connect to the voice channel. Check permissions.")
 	// }
@@ -15,7 +16,7 @@ module.exports.run = async(bot, message, args) => {
 	// }
 if (args[0]==="play"){
 	let link = args[1].replace(/\s+/g, '')
-	if(ytdl.validateID(link!=true)) return message.channel.send("Only valid YouTube URLs are accepted.")
+	if (!ytdl.validateURL(link)) return message.channel.send("Only valid YouTube URLs are accepted.")
 	const songInfo = await ytdl.getInfo(args[1])
 	const song = {
 		title: songInfo.title,

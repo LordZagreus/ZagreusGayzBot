@@ -59,7 +59,7 @@ function play(guild, song){
 		return
 	}
 
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url), {filter: 'audioonly'})
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url), {filter: "audioonly"})
 
 	dispatcher.on(`end`, () => {
 		console.log("Song ended.")

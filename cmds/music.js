@@ -15,9 +15,11 @@ module.exports.run = async(bot, message, args) => {
 	// 	message.channel.send("I do not have speak permissions.")
 	// }
 if (args[0]==="play"){
-	let link = args[1].replace(/\s+/g, '')
-	if (!ytdl.validateURL(link)) return message.channel.send("Only valid YouTube URLs are accepted.")
-	const songInfo = await ytdl.getInfo(args[1])
+	let toVal = args[1].replace(/\s+/g, '')
+	let toPlay = toVal
+	if(ytdl.validateURL("https://www.youtube.com/watch?v="+toVal)) toPlay="https://www.youtube.com/watch?v="+toVal
+	if (!ytdl.validateURL(toVal)&&!ytdl.validateURL(toPlay)) return message.channel.send("Only valid YouTube URLs are accepted.")
+	const songInfo = await ytdl.getInfo(toPlay)
 	const song = {
 		title: songInfo.title,
 		url: songInfo.video_url
@@ -59,7 +61,7 @@ function play(guild, song){
 		return
 	}
 
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url), {filter: "audioonly"})
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
 	dispatcher.on(`end`, () => {
 		console.log("Song ended.")
 		serverQueue.songs.shift()
@@ -104,10 +106,10 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
 **Currently playing:** ${serverQueue.songs[0].title}
 `);
 } else if (args[0]==="volume"){
+	if (!args[1]) return message.channel.send(`🔈 The current volume is: **${serverQueue.volume}**`);
 	if (args[1]<1 || args[1]>10 || args[1]!=parseInt(args[1],10)) return message.channel.send('Volume must be an integer within 1 and 10, inclusive.')
 	if (!voiceChannel) return message.channel.send('You must be in a voice channel to use music module.');
 		if (!serverQueue) return message.channel.send('There is nothing playing.');
-		if (!args[1]) return message.channel.send(`The current volume is: **${serverQueue.volume}**`);
 		serverQueue.volume = args[1];
 		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1]/10);
 		return message.channel.send(`🔈 Volume set to: **${args[1]}**`);

@@ -1,13 +1,14 @@
+const botsettings = require('../botsettings.json')
 module.exports.run = async(bot, message, args) => {
-  const member = message.mentions.members.first()
-  var rolekick = message.member.hasPermission('KICK_MEMBERS') || message.author.id==226730303526404096
-  if (!rolekick) {
+  const member = message.mentions.members.first() || message.guild.members.get(args[0])
+  var rolekick = message.member.hasPermission('ADMINISTRATOR')
+  if (!rolekick&&message.author.id!=botsettings.ownerid) {
     return message.channel.send(`You do not have the permissions necessary to use this command.`)
   }
   if (!member) {
-    return message.channel.send(`Because of lazy hotcode, I can only kick users you \@. UserID and mentionless kicking soon:tm:`)
+    return message.channel.send(`No user specified.`)
   }
-  if (member.id==226730303526404096) {
+  if (member.id==botsettings.ownerid) {
     return message.channel.send("not cool bro")
   }
 

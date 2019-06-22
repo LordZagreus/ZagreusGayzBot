@@ -1,10 +1,13 @@
 const fs = module.require("fs")
 var util = require('util')
 var http = require('http')
+const botconfig = require("../botsettings.json")
+const ownerid = botconfig.ownerid
 module.exports.run = async(bot, message, args) => {
-let ownerID=226730303526404096
-if (message.author.id!=ownerID) return message.channel.send("Only the bot owner can interact with blacklist module.")
-var toBList = message.guild.member(message.mentions.users.first())
+var admin = message.member.hasPermission('ADMINISTRATOR')
+if (message.author.id!=ownerid&&!admin) return message.channel.send("Only administrators can interact with blacklist module.")
+var toBList = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
+if (!toBList) return message.channel.send("Specify a user to blacklist.")
 if (args[0]==="add"){
 	bot.blacklist[toBList.id]={
     guild: message.guild.id
@@ -26,3 +29,4 @@ if (args[0]==="add"){
 module.exports.help = {
 	name: "blacklist"
 }
+

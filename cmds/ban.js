@@ -1,13 +1,14 @@
+const botsettings=require('../botsettings.json')
 module.exports.run = async(bot, message, args) => {
-  const member = message.mentions.members.first()
-  var roleban = message.member.hasPermission('BAN_MEMBERS') || message.author.id==226730303526404096
-  if (!roleban) {
+  const member = message.mentions.members.first() || message.guild.members.get(args[0])
+  var roleban = message.member.hasPermission('ADMINISTRATOR')
+  if (!roleban&&message.author.id!=botsettings.ownerid) {
     return message.channel.send(`You do not have the permissions necessary to use this command.`)
   }
   if (!member) {
-    return message.channel.send(`Because of lazy hotcode, I can only ban users you \@. UserID and mentionless banning soon:tm:`)
+    return message.channel.send(`No member specified.`)
   }
-  if (member.id==226730303526404096) {
+  if (member.id==botsettings.ownerid||member.id==525110453307703298) {
     return message.channel.send("not cool bro")
   }
 

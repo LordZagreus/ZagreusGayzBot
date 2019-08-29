@@ -1,3 +1,9 @@
+/* eslint-disable no-redeclare */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-inner-declarations */
+
+// CRITICAL: CURRENT ENCODER RUNS ON OPUSSCRIPT. THIS MAY CAUSE ERRORS IN CREATING STREAM WHEN PLAYING ON MULTIPLE SHARDS.
+
 const Discord = require('discord.js')
 const botSettings = require('../botsettings.json')
 const ytdl = require('ytdl-core')
@@ -12,43 +18,48 @@ module.exports.run = async (bot, message, args) => {
   if (!voiceChannel) return message.channel.send('You are not in a voice channel.')
   const permissions = voiceChannel.permissionsFor(message.client.user)
   // permissions checks, broken due to deprecations
-  // if (!permission.has("CONNECT")) {
-  // 	message.channel.send("Could not connect to the voice channel. Check permissions.")
-  // }
-  // if (!permissions.has("SPEAKrs")) {
-  // 	message.channel.send("I do not have speak permissions.")
-  // }
-
+  if (!permissions.has('CONNECT')) {
+    return message.channel.send('Could not connect to the voice channel. Check permissions.')
+  }
+  if (!permissions.has('SPEAK')) {
+    return message.channel.send('I do not have speak permissions for the channel you are in.')
+  }
+  var queryViaSearch = false
   if (args[0] === 'play') {
     let toVal = args[1].replace(/\s+/g, '')
     let toPlay = toVal
     if (ytdl.validateURL('https://www.youtube.com/watch?v=' + toVal)) {
-		toPlay = 'https://www.youtube.com/watch?v=' + toVal
+      toPlay = 'https://www.youtube.com/watch?v=' + toVal
     } else {
-		toPlay = message.content.slice(botSettings.prefix.length+11)
-	}
+      toPlay = message.content.slice(botSettings.prefix.length + 11)
+    }
+    // old validation check, now deprecated, will remain in case of desired rollback
     // if (!ytdl.validateURL(toVal) && !ytdl.validateURL(toPlay)) return message.channel.send('Only valid YouTube URLs and IDs are accepted.')
+    // nested try catch because my brain is simply too large and it looks cooler than just using ifs
     try {
       var video = await youtube.getVideo(toPlay)
     } catch (error) {
       try {
         var videos = await youtube.searchVideos(toPlay, 1)
         var video = await youtube.getVideoByID(videos[0].id)
+        queryViaSearch = true
       } catch (error) {
         return message.channel.send('No search results found.')
       }
     }
+    // comments below are now deprecated features that remain in case of desired rollback
     // const songInfo = await ytdl.getInfo(toPlay)
     const song = {
       // title: songInfo.title,
-	  // url: songInfo.video_url
-	  id: video.id,
-	  title: video.title,
-	  url: `https://www.youtube.com/watch?v=${video.id}`
+      // url: songInfo.video_url
+      id: video.id,
+      title: video.title,
+      url: `https://www.youtube.com/watch?v=${video.id}`
     }
 
     if (!serverQueue) {
       message.channel.send(`Now playing ${song.title}`)
+      if (queryViaSearch === true) message.channel.send(song.url)
       const queueConstruct = {
         textChannel: message.channel,
         voiceChannel: voiceChannel,
@@ -71,7 +82,11 @@ module.exports.run = async (bot, message, args) => {
       }
     } else {
       serverQueue.songs.push(song)
-      return message.channel.send(`${song.title} has been added.`)
+      if (queryViaSearch === true) {
+        return message.channel.send(`${song.title} has been added.\n${song.url}`)
+      } else {
+        return message.channel.send(`${song.title} has been added.`)
+      }
     }
 
     function play (guild, song) {
@@ -137,7 +152,7 @@ ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
     serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 10)
     return message.channel.send(`🔈 Volume set to: **${args[1]}**`)
   } else {
-    return message.channel.send('Syntax error: correct usage is `!music [play/stop/pause/resume/queue/volume] [youtube link/youtube id]`')
+    return message.channel.send('Syntax error: correct usage is `!music [play/stop/pause/resume/queue/volume] [youtube link/youtube id/query]`')
   }
 }
 module.exports.help = {

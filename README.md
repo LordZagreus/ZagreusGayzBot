@@ -5,4 +5,4 @@ Written in Rust.js
 
 Until server host is finished run `npm run dev` in a terminal lmao.
 
-Server is up and running but often crashes due to lack of a heatsink.
+NOTE: As of discord.js refactor, this bot is completely dead. Its syntax will not be updated as I have lost all motivation to keep this project alive when Sparrow exists and has more substantial shit for me to work on. CY@, it was fun while it lasted.
